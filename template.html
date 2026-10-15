@@ -1,0 +1,602 @@
+<title>Run Out</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;600;700&family=Caveat:wght@600;700&family=Patrick+Hand&family=Fredoka:wght@500;600&family=Nunito:wght@600;700;800&family=Audiowide&family=Exo+2:wght@500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Manrope:wght@500;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a start menu of mode cards, then three screens (game, settings, profile) with a back button.
+   Every colour, font, radius and shadow is a token, and each theme is one block of tokens, so a theme
+   can be applied to the whole app or to a single preview card. Default theme: Pool Hall. */
+[data-theme="hall"] {
+  --bg: #12100e; --bg-art: radial-gradient(ellipse at 50% 0%, #2a2219 0%, #12100e 62%);
+  --surface: #1d1915; --surface-2: #26201a; --line: #3a3128; --text: #efe7da; --muted: #a99c8a;
+  --accent: #d9a441; --accent-ink: #1a1208; --gold: #d9a441; --good: #6fcf8e; --bad: #ef6f5c;
+  --display: "Alfa Slab One", Rockwell, Georgia, serif; --display-w: 400; --display-track: 0.01em;
+  --body: "Archivo", "Helvetica Neue", Arial, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius: 12px; --bw: 1px; --shadow: 0 18px 50px rgba(0,0,0,.55); --shadow-sm: 0 4px 14px rgba(0,0,0,.35);
+  --scrim: rgba(10,8,6,.55); --toast: rgba(18,16,14,.9); --hover: #4a3e31;
+  --wheel-face: #b9862c; --wheel-ring: #5c3f12; --wheel-inner: #1d1915; --tick: #6b4a14; --tick-l: #2a1a06;
+  color-scheme: dark;
+}
+[data-theme="sketch"] {
+  --bg: #f6f3ec; --bg-art: repeating-linear-gradient(0deg, transparent 0 31px, rgba(28,27,25,.06) 31px 32px), #f6f3ec;
+  --surface: #fbf9f4; --surface-2: #fffdf8; --line: #1c1b19; --text: #1c1b19; --muted: #5f5b53;
+  --accent: #1c1b19; --accent-ink: #fbf9f4; --gold: #1c1b19; --good: #1c1b19; --bad: #b3261e;
+  --display: "Caveat", "Comic Sans MS", cursive; --display-w: 700; --display-track: 0;
+  --body: "Patrick Hand", "Comic Sans MS", cursive; --mono: "Patrick Hand", "Comic Sans MS", cursive;
+  --radius: 6px; --bw: 2px; --shadow: 5px 5px 0 #1c1b19; --shadow-sm: 3px 3px 0 #1c1b19;
+  --scrim: rgba(246,243,236,.65); --toast: #fffdf8; --hover: #ece6d8;
+  --wheel-face: #fbf9f4; --wheel-ring: #1c1b19; --wheel-inner: #f6f3ec; --tick: #8a857a; --tick-l: #1c1b19;
+  color-scheme: light;
+}
+[data-theme="pastel"] {
+  --bg: #f6f1fa; --bg-art: radial-gradient(circle at 12% 0%, #ffe1ec 0, transparent 38%), radial-gradient(circle at 92% 8%, #dcf5ec 0, transparent 40%), #f6f1fa;
+  --surface: #ffffff; --surface-2: #fbf8ff; --line: #e8dff2; --text: #3d3550; --muted: #857a9a;
+  --accent: #ff8fab; --accent-ink: #4a1830; --gold: #f5a93a; --good: #3fb886; --bad: #f2546e;
+  --display: "Fredoka", "Nunito", sans-serif; --display-w: 600; --display-track: 0;
+  --body: "Nunito", "Helvetica Neue", Arial, sans-serif; --mono: "Nunito", sans-serif;
+  --radius: 18px; --bw: 1px; --shadow: 0 14px 34px rgba(120,90,160,.16); --shadow-sm: 0 4px 12px rgba(120,90,160,.12);
+  --scrim: rgba(246,241,250,.6); --toast: rgba(255,255,255,.96); --hover: #f3ecfb;
+  --wheel-face: #ffffff; --wheel-ring: #e8dff2; --wheel-inner: #fbf8ff; --tick: #d8cce8; --tick-l: #9c8fb5;
+  color-scheme: light;
+}
+[data-theme="neon"] {
+  --bg: #07060d; --bg-art: radial-gradient(ellipse at 50% -10%, #2a0f4a 0%, #07060d 60%);
+  --surface: #100d1c; --surface-2: #171229; --line: #2b2347; --text: #efeaff; --muted: #9a8fc2;
+  --accent: #ff3da8; --accent-ink: #1a0010; --gold: #ffd84d; --good: #3dffb5; --bad: #ff4d6d;
+  --display: "Audiowide", "Exo 2", sans-serif; --display-w: 400; --display-track: 0.02em;
+  --body: "Exo 2", "Helvetica Neue", Arial, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius: 10px; --bw: 1px; --shadow: 0 0 0 1px rgba(41,231,255,.22), 0 0 34px rgba(255,61,168,.18); --shadow-sm: 0 0 14px rgba(41,231,255,.18);
+  --scrim: rgba(7,6,13,.6); --toast: rgba(16,13,28,.92); --hover: #221a3d;
+  --wheel-face: #171229; --wheel-ring: #29e7ff; --wheel-inner: #07060d; --tick: #2b2347; --tick-l: #29e7ff;
+  color-scheme: dark;
+}
+[data-theme="slate"] {
+  --bg: #0e131a; --bg-art: #0e131a;
+  --surface: #151c26; --surface-2: #1c2532; --line: #273243; --text: #e7ecf2; --muted: #8c99ab;
+  --accent: #ff8a5b; --accent-ink: #2a1206; --gold: #f2c46d; --good: #5cd6a2; --bad: #ff6f6f;
+  --display: "Bricolage Grotesque", "Avenir Next", sans-serif; --display-w: 800; --display-track: -0.02em;
+  --body: "Manrope", "Avenir Next", Arial, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius: 12px; --bw: 1px; --shadow: 0 18px 50px rgba(0,0,0,.45); --shadow-sm: 0 4px 14px rgba(0,0,0,.3);
+  --scrim: rgba(8,11,16,.5); --toast: rgba(14,19,26,.9); --hover: #3a4860;
+  --wheel-face: #1c2532; --wheel-ring: #273243; --wheel-inner: #0e131a; --tick: #3a4860; --tick-l: #8c99ab;
+  color-scheme: dark;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg-art); background-color: var(--bg); background-attachment: fixed; color: var(--text); font-family: var(--body); font-size: 15px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 18px 28px;
+}
+.screen { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+h1, h2, h3 { font-family: var(--display); font-weight: var(--display-w); letter-spacing: var(--display-track); margin: 0; text-wrap: balance; }
+button { font-family: var(--body); }
+button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+h1[tabindex="-1"]:focus { outline: none; }
+.b { font: 700 14px var(--body); border-radius: var(--radius); padding: 10px 16px; border: var(--bw) solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+.b.primary, .b.shoot { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+[data-theme="sketch"] .b { box-shadow: var(--shadow-sm); }
+[data-theme="sketch"] .b:active { transform: translate(2px, 2px); box-shadow: none; }
+.panel { background: var(--surface); border: var(--bw) solid var(--line); border-radius: calc(var(--radius) + 4px); padding: 16px; box-shadow: var(--shadow-sm); }
+.lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); display: flex; justify-content: space-between; gap: 10px; }
+[data-theme="sketch"] .lbl { font-size: 14px; letter-spacing: .04em; }
+.lbl output { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); letter-spacing: 0; text-transform: none; }
+
+/* ---------- screen heads ---------- */
+.head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.head-l { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.back { font: 700 14px var(--body); background: transparent; border: var(--bw) solid var(--line); color: var(--text); border-radius: 999px; padding: 8px 14px; cursor: pointer; white-space: nowrap; }
+.head h1 { font-size: clamp(22px, 3.4vw, 30px); line-height: 1.05; }
+[data-theme="sketch"] .head h1 { font-size: clamp(30px, 4.4vw, 40px); }
+.icon-btn { width: 40px; height: 40px; border-radius: 999px; border: var(--bw) solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; display: grid; place-items: center; }
+.icon-btn svg { width: 20px; height: 20px; }
+
+/* ---------- menu ---------- */
+.menu-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 8px; }
+.logo { font-size: clamp(44px, 8vw, 76px); line-height: .95; }
+.logo span { color: var(--accent); }
+.lede { color: var(--muted); margin: 8px 0 0; font-size: 16px; max-width: 46ch; }
+.chip { display: inline-flex; align-items: center; gap: 10px; background: var(--surface); border: var(--bw) solid var(--line); border-radius: 999px; padding: 5px 14px 5px 5px; color: var(--text); font: 700 14px var(--body); cursor: pointer; box-shadow: var(--shadow-sm); }
+.av { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font: 800 15px var(--body); }
+.av.big { width: 64px; height: 64px; font-size: 28px; }
+.mode-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 6px; }
+@media (max-width: 1060px) { .mode-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.mode-card { text-align: left; display: flex; flex-direction: column; background: var(--surface); border: var(--bw) solid var(--line); border-radius: calc(var(--radius) + 6px); padding: 0; overflow: hidden; color: var(--text); cursor: pointer; box-shadow: var(--shadow-sm); transition: transform .15s, box-shadow .15s; }
+.mode-card canvas { display: block; width: 100%; aspect-ratio: 16 / 9; height: auto; max-width: 100%; }
+.mc-body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.mc-body h2 { font-size: 24px; display: flex; align-items: center; gap: 8px; }
+[data-theme="sketch"] .mc-body h2 { font-size: 32px; }
+.mc-body p { margin: 0; color: var(--muted); font-size: 14px; }
+.mc-meta { margin-top: auto; padding-top: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+.meter { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+[data-theme="sketch"] .meter { background: transparent; border: 1.5px solid var(--line); height: 8px; }
+.meter i { display: block; height: 100%; background: var(--accent); }
+.badge { font: 700 11px var(--body); text-transform: uppercase; letter-spacing: .08em; background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 3px 8px; }
+.menu-foot { display: flex; gap: 10px; flex-wrap: wrap; }
+.first-hint { color: var(--muted); font-size: 14px; margin: 0; }
+
+/* ---------- game ---------- */
+.levels { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 8px; }
+.lv { font: 600 13px var(--mono); width: 38px; height: 38px; border-radius: calc(var(--radius) - 2px); border: var(--bw) solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer; position: relative; }
+.lv[aria-current="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.lv.solved::after { content: ""; position: absolute; right: 3px; top: 3px; width: 6px; height: 6px; border-radius: 50%; background: var(--good); }
+.lv .st { position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%); font-size: 9px; color: var(--gold); white-space: nowrap; line-height: 1; }
+.lv .st.pips { color: var(--dc); font-size: 12px; }
+.brief { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 6px 18px; }
+.brief h2 { font-size: 21px; }
+[data-theme="sketch"] .brief h2 { font-size: 28px; }
+.brief p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+.hud { display: flex; align-items: center; gap: 6px 16px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+.hud b { font-family: var(--mono); font-weight: 500; color: var(--text); font-size: 14px; }
+.group { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.dot { width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; font: 700 10px var(--mono); color: #111; }
+[data-theme="sketch"] .dot { box-shadow: 0 0 0 1.5px var(--line); }
+.dot.gone { opacity: .2; }
+.stage { display: flex; justify-content: center; }
+.board { position: relative; }
+canvas#c { display: block; touch-action: none; cursor: crosshair; border-radius: calc(var(--radius) + 4px); box-shadow: var(--shadow); }
+#mini { position: absolute; top: 12px; right: 12px; border-radius: 8px; box-shadow: 0 0 0 var(--bw) var(--line), var(--shadow-sm); cursor: pointer; }
+.msg { position: absolute; left: 50%; top: 12px; transform: translateX(-50%); background: var(--toast); color: var(--text); padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; white-space: nowrap; pointer-events: none; transition: opacity .3s; box-shadow: var(--shadow-sm); }
+.msg[data-kind="good"] { color: var(--good); }
+.msg[data-kind="bad"] { color: var(--bad); }
+.overlay { position: absolute; inset: 0; display: grid; place-items: center; background: var(--scrim); border-radius: calc(var(--radius) + 4px); }
+.card { background: var(--surface-2); border: var(--bw) solid var(--line); border-radius: calc(var(--radius) + 4px); padding: 22px 24px; text-align: center; max-width: 340px; display: flex; flex-direction: column; gap: 10px; margin: 0 16px; box-shadow: var(--shadow); }
+.card h3 { font-size: 28px; }
+[data-theme="sketch"] .card h3 { font-size: 36px; }
+.card p { margin: 0; color: var(--muted); }
+.card .row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 6px; }
+.bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px 22px; align-items: center; background: var(--surface); border: var(--bw) solid var(--line); border-radius: calc(var(--radius) + 4px); padding: 12px 16px; box-shadow: var(--shadow-sm); }
+.mid { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--bg); border: var(--bw) solid var(--line); border-radius: var(--radius); padding: 3px; gap: 3px; }
+.seg button { font: 700 13px var(--body); min-height: 36px; background: transparent; color: var(--muted); border: 0; border-radius: calc(var(--radius) - 3px); cursor: pointer; }
+[data-theme="sketch"] .seg button { font-size: 16px; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 30px; background: transparent; cursor: pointer; }
+input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--accent) var(--fill, 45%), var(--line) var(--fill, 45%)); }
+input[type=range]::-moz-range-track { height: 6px; border-radius: 3px; background: var(--line); }
+input[type=range]::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--accent); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -8px; border-radius: 50%; background: var(--surface-2); border: 3px solid var(--accent); }
+input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--surface-2); border: 3px solid var(--accent); }
+.wheel { width: 104px; height: 104px; touch-action: none; cursor: grab; border-radius: 50%; display: block; }
+.wheel:active { cursor: grabbing; }
+.wheel .face { fill: var(--wheel-face); stroke: var(--wheel-ring); stroke-width: 3; }
+.wheel .inner { fill: var(--wheel-inner); }
+.wheel .ptr { fill: var(--accent); }
+.wheel .deg { fill: var(--text); font-family: var(--mono); }
+.wheel .tk { stroke: var(--tick); stroke-width: 1.6; stroke-linecap: round; }
+.wheel .tk.l { stroke: var(--tick-l); stroke-width: 3; }
+button.shoot.big { min-height: 52px; min-width: 128px; font-size: 17px; font-weight: 800; }
+[data-theme="hall"] button.shoot.big, [data-theme="neon"] button.shoot.big { font-family: var(--display); font-weight: 400; letter-spacing: .04em; }
+[data-theme="sketch"] button.shoot.big { font-family: var(--display); font-size: 28px; }
+[data-theme="neon"] button.shoot { box-shadow: 0 0 18px rgba(255,61,168,.55); }
+.foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.tools { display: flex; gap: 6px; flex-wrap: wrap; }
+.tools .b { background: transparent; border-color: transparent; color: var(--muted); padding: 8px 12px; box-shadow: none; }
+.tools #map[aria-pressed="true"] { color: var(--accent); }
+.help { color: var(--muted); font-size: 12px; margin: 0; }
+kbd { font-family: var(--mono); font-size: 11px; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; color: var(--text); }
+[data-r="1"] { --dc: #5cd6a2; } [data-r="2"] { --dc: #a8d672; } [data-r="3"] { --dc: #f2b84d; } [data-r="4"] { --dc: #ff9455; } [data-r="5"] { --dc: #ff5f6a; }
+.diff { display: inline-flex; align-items: center; gap: 3px; color: var(--text); font-weight: 700; }
+.diff i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); opacity: .5; display: inline-block; }
+.diff[data-r="1"] i:nth-child(-n+1), .diff[data-r="2"] i:nth-child(-n+2), .diff[data-r="3"] i:nth-child(-n+3), .diff[data-r="4"] i:nth-child(-n+4), .diff[data-r="5"] i:nth-child(-n+5) { background: var(--dc); opacity: 1; }
+.hearts { color: var(--bad); font-size: 15px; letter-spacing: 2px; }
+.hearts .lost { color: var(--line); opacity: .5; }
+.stars { color: var(--gold); font-size: 30px; letter-spacing: 6px; }
+.stars .off { color: var(--line); opacity: .45; }
+.starlist { list-style: none; margin: 0; padding: 0; text-align: left; display: grid; gap: 4px; font-size: 14px; }
+.starlist li::before { content: "★ "; color: var(--line); opacity: .45; }
+.starlist li.got::before { color: var(--gold); opacity: 1; }
+
+/* ---------- two players ---------- */
+.players { display: flex; gap: 8px; flex-wrap: wrap; }
+.pl { display: flex; align-items: center; gap: 8px; padding: 5px 10px; border-radius: 999px; border: var(--bw) solid var(--line); background: var(--surface); color: var(--muted); }
+.pl.on { border-color: var(--accent); color: var(--text); box-shadow: 0 0 0 2px var(--accent) inset; }
+.pl b { font-family: var(--body); font-size: 14px; }
+.pl .score { font-family: var(--mono); color: var(--text); }
+.pl .grp { font-size: 12px; }
+.pl .dots { display: flex; gap: 2px; }
+.pl .dots .dot { width: 16px; height: 16px; font-size: 8px; }
+.vs-setup { display: flex; flex-direction: column; gap: 16px; max-width: 640px; }
+.vs-names { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 12px; align-items: end; }
+.vs-names label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.vs-names input { font: 700 18px var(--body); padding: 10px 12px; border-radius: var(--radius); border: var(--bw) solid var(--line); background: var(--bg); color: var(--text); min-width: 0; }
+.vs-names .vs { font-family: var(--display); font-weight: var(--display-w); font-size: 22px; padding-bottom: 10px; color: var(--accent); }
+.vs-setup .seg { max-width: 360px; }
+.vs-setup p { margin: 0; color: var(--muted); font-size: 14px; }
+.b.big-cta { font-size: 18px; padding: 14px 22px; align-self: flex-start; }
+@media (max-width: 480px) { .vs-names { grid-template-columns: minmax(0, 1fr); } .vs-names .vs { padding: 0; } }
+
+/* ---------- settings ---------- */
+.settings { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.showcase { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 16px; }
+.showcase canvas { display: block; width: 100%; height: auto; border-radius: var(--radius); }
+.show-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: stretch; }
+.ui-sample { display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+.ui-sample .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.theme-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.theme-card { text-align: left; padding: 0; overflow: hidden; border-radius: var(--radius); border: var(--bw) solid var(--line); background: var(--surface-2); color: var(--text); cursor: pointer; display: flex; flex-direction: column; }
+.theme-card canvas { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1.12; }
+.theme-card .tc-body { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 2px; }
+.theme-card strong { font-size: 14px; display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.theme-card span { font-size: 12px; color: var(--muted); line-height: 1.35; }
+.theme-card[aria-checked="true"] { outline: 3px solid var(--accent); outline-offset: 1px; }
+.theme-card .tick { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: none; place-items: center; font-size: 12px; }
+.theme-card[aria-checked="true"] .tick { display: grid; }
+.setting { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+[data-theme="sketch"] .setting { border-top-style: dashed; }
+.setting:first-of-type { border-top: 0; }
+.setting div strong { display: block; font-size: 15px; }
+.setting div span { color: var(--muted); font-size: 13px; }
+.switch { width: 48px; height: 28px; border-radius: 999px; border: var(--bw) solid var(--line); background: var(--bg); position: relative; cursor: pointer; flex: none; }
+.switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--muted); transition: transform .15s; }
+.switch[aria-checked="true"] { background: var(--accent); border-color: var(--accent); }
+.switch[aria-checked="true"]::after { transform: translateX(20px); background: var(--accent-ink); }
+.panel h2 { font-size: 20px; margin-bottom: 10px; }
+[data-theme="sketch"] .panel h2 { font-size: 28px; }
+
+/* ---------- profile ---------- */
+.profile { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 16px; align-items: start; }
+.who { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.who label { font-size: 13px; color: var(--muted); font-weight: 700; }
+.who input { width: 100%; box-sizing: border-box; font: 700 18px var(--body); padding: 10px 12px; border-radius: var(--radius); border: var(--bw) solid var(--line); background: var(--bg); color: var(--text); }
+.stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.stat { background: var(--surface-2); border: var(--bw) solid var(--line); border-radius: var(--radius); padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+.stat b { font-family: var(--display); font-weight: var(--display-w); font-size: 28px; line-height: 1; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 13px; }
+.stat .meter { margin-top: 4px; }
+.danger { display: flex; flex-direction: column; gap: 10px; }
+.danger p { margin: 0; color: var(--muted); font-size: 14px; }
+.confirm { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.b.warn { color: var(--bad); }
+.b.warn-solid { background: var(--bad); border-color: var(--bad); color: #fff; }
+
+@media (max-width: 860px) {
+  .mode-grid { grid-template-columns: minmax(0, 1fr); }
+  .mode-card { flex-direction: row; }
+  .mode-card canvas { width: 40%; aspect-ratio: auto; }
+  .settings, .profile { grid-template-columns: minmax(0, 1fr); }
+  .showcase { position: static; }
+}
+@media (max-width: 640px) {
+  body { padding-block: 12px 18px; }
+  .screen { gap: 10px; }
+  .help { display: none; }
+  .brief h2 { font-size: 18px; }
+  .bar { grid-template-columns: auto minmax(0, 1fr); gap: 12px 14px; padding: 12px; }
+  .wheel { width: 96px; height: 96px; }
+  button.shoot.big { grid-column: 1 / -1; }
+  .levels { gap: 5px; }
+  .lv { width: 34px; height: 34px; }
+  .tools { width: 100%; flex-wrap: nowrap; gap: 2px; }
+  .tools .b { flex: 1 1 0; white-space: nowrap; padding: 8px 4px; font-size: 12px; }
+  .msg { white-space: normal; width: max-content; max-width: 80%; text-align: center; border-radius: 12px; }
+  .mode-card canvas { width: 36%; }
+  .mc-body { padding: 12px; }
+  .mc-body h2 { font-size: 20px; }
+  .show-row { grid-template-columns: minmax(0, 1fr); }
+  .head-title-tag { display: none; }
+}
+/* ---------- learn ---------- */
+.mode-card.wide { grid-column: 1 / -1; flex-direction: row; }
+.mode-card.wide canvas { width: 34%; aspect-ratio: auto; min-height: 150px; }
+.mode-card.wide .mc-body { justify-content: center; }
+.mode-card.wide .mc-body p { max-width: 60ch; }
+.learn-lede { max-width: 70ch; margin: 0; }
+.learn-lede span { color: var(--text); font-weight: 700; }
+.lessons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.lesson { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; text-align: left; background: var(--surface); border: var(--bw) solid var(--line); border-radius: calc(var(--radius) + 4px); padding: 14px 16px; color: var(--text); cursor: pointer; box-shadow: var(--shadow-sm); font: inherit; transition: transform .15s, box-shadow .15s; }
+.lesson .num { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 700 16px var(--mono); border: var(--bw) solid var(--line); background: var(--bg); }
+.lesson.done .num { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.lesson .lt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.lesson .lt strong { font-family: var(--display); font-weight: var(--display-w); font-size: 19px; line-height: 1.1; }
+[data-theme="sketch"] .lesson .lt strong { font-size: 25px; }
+.lesson .lt span { color: var(--muted); font-size: 13px; }
+.lesson .lp { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; width: 70px; font-size: 12px; color: var(--muted); }
+.lesson .lp .meter { width: 100%; }
+.lesson .lp .meter i { display: block; height: 100%; background: var(--accent); }
+.card.wide { max-width: 520px; }
+.card .intro { text-align: left; display: flex; flex-direction: column; gap: 8px; }
+.card .intro p { margin: 0; color: var(--text); font-size: 15px; line-height: 1.45; }
+.hud .assist { border: var(--bw) solid var(--line); border-radius: 999px; padding: 2px 10px; font-size: 12px; }
+.hud .choices { display: flex; gap: 6px; }
+.hud .choices .b { padding: 6px 14px; }
+.dock { display: contents; }
+@media (max-width: 860px) { .lessons { grid-template-columns: minmax(0, 1fr); } .mode-card.wide canvas { width: 40%; } }
+
+/* ---------- phone landscape: table on the left, controls in a column on the right ---------- */
+@media (orientation: landscape) and (max-height: 560px) {
+  html, body { height: auto; }
+  body { padding-block: 8px 10px; min-height: 100dvh; box-sizing: border-box; }
+  .screen { gap: 10px; }
+  .help, .head-title-tag { display: none !important; }
+  .head h1 { font-size: 22px; }
+  [data-theme="sketch"] .head h1 { font-size: 28px; }
+  .back { padding: 6px 12px; font-size: 13px; }
+  .icon-btn { width: 34px; height: 34px; }
+  .menu-head { padding-top: 0; }
+  .logo { font-size: 40px; }
+  .lede { font-size: 14px; margin-top: 4px; }
+  .mode-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .mode-card { flex-direction: row; }
+  .mode-card canvas, .mode-card.wide canvas { width: 34%; aspect-ratio: auto; min-height: 0; }
+  .mc-body { padding: 10px 12px; gap: 4px; }
+  .mc-body h2 { font-size: 19px; }
+  .mc-body p { font-size: 13px; }
+  .mc-meta { padding-top: 6px; }
+  .lessons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lesson { padding: 10px 12px; gap: 10px; }
+  .lesson .lt strong { font-size: 16px; }
+  .settings, .profile { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+
+  #scr-game:not([hidden]) { display: grid; max-width: none; height: calc(100dvh - 18px); grid-template-columns: minmax(0, 1fr) clamp(184px, 27vw, 240px); grid-template-rows: auto auto minmax(0, 1fr); grid-template-areas: "head levels" "brief dock" "stage dock"; gap: 6px 12px; }
+  #scr-game > .head { grid-area: head; flex-wrap: nowrap; }
+  #scr-game > .levels { grid-area: levels; padding-bottom: 8px; gap: 4px; align-content: start; justify-content: flex-end; }
+  #scr-game .lv { width: 30px; height: 30px; font-size: 12px; }
+  #scr-game .lv .st { bottom: -8px; font-size: 8px; }
+  #scr-game .lv .st.pips { font-size: 10px; }
+  #scr-game > .brief { grid-area: brief; flex-wrap: nowrap; align-items: center; gap: 4px 12px; min-width: 0; }
+  #scr-game > .brief > div:first-child { min-width: 0; display: flex; align-items: baseline; gap: 10px; }
+  #scr-game .brief h2 { font-size: 17px; white-space: nowrap; }
+  [data-theme="sketch"] #scr-game .brief h2 { font-size: 22px; }
+  #scr-game .brief p { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
+  #scr-game .hud { flex-wrap: nowrap; gap: 4px 10px; white-space: nowrap; }
+  #scr-game > .stage { grid-area: stage; min-height: 0; overflow: hidden; align-items: center; }
+  .dock { grid-area: dock; display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow-y: auto; }
+  .dock .bar { grid-template-columns: auto minmax(0, 1fr); padding: 10px; gap: 10px; }
+  .dock .wheel { width: 84px; height: 84px; grid-row: 1; grid-column: 1; }
+  .dock .mid { grid-column: 1 / -1; grid-row: 2; gap: 8px; }
+  .dock button.shoot.big { min-width: 0; min-height: 48px; font-size: 16px; grid-column: 2; grid-row: 1; }
+  .dock .foot { justify-content: flex-start; }
+  .dock .tools { flex-wrap: wrap; gap: 2px; width: auto; }
+  .dock .tools .b { padding: 6px 8px; font-size: 12px; flex: 0 0 auto; }
+  .seg button { min-height: 32px; font-size: 12px; }
+  .overlay { position: fixed; inset: 0; z-index: 40; border-radius: 0; padding: 10px; overflow-y: auto; place-items: safe center; }
+  .card { padding: 14px 18px; gap: 8px; max-width: min(560px, 100%); }
+  .card.wide { max-width: min(640px, 100%); }
+  #overlay .card h3 { font-size: 24px; }
+  .seg { padding: 2px; gap: 2px; }
+  #scr-game .hud > span, #scr-game .hud .group { flex-wrap: nowrap; white-space: nowrap; }
+  .card .intro p { font-size: 13px; }
+  .msg { top: 8px; }
+}
+
+/* ---------- selection: only names and codes can be selected and copied ---------- */
+body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+input, textarea, .selectable, .selectable * { -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
+@media (hover: hover) {
+  .lv:hover, .seg button:hover, .tools .b:hover { color: var(--text); }
+}
+
+/* ---------- level and XP ---------- */
+.chip-txt { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+.chip-lvl { font-size: 11px; color: var(--muted); font-weight: 700; }
+.chip-bar { width: 46px; height: 5px; border-radius: 3px; background: var(--line); overflow: hidden; align-self: center; }
+.chip-bar i { display: block; height: 100%; background: var(--accent); }
+.levelbox { width: 100%; display: flex; flex-direction: column; gap: 6px; padding-top: 6px; }
+.levelbox .lvl-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.levelbox .lvl-row b { font-family: var(--display); font-weight: var(--display-w); font-size: 26px; }
+.levelbox .lvl-row span, .levelbox p { color: var(--muted); font-size: 13px; margin: 0; }
+.levelbox .meter i { display: block; height: 100%; background: var(--accent); }
+.xp-how { margin-top: 14px; color: var(--muted); font-size: 13px; }
+.xp-how summary { cursor: pointer; font-weight: 700; color: var(--text); }
+.xp-how ul { margin: 8px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.xp-toast { position: fixed; left: 50%; top: 14px; transform: translate(-50%, -10px); background: var(--accent); color: var(--accent-ink); font: 800 14px var(--body); padding: 8px 16px; border-radius: 999px; box-shadow: var(--shadow); opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; z-index: 60; white-space: nowrap; }
+.xp-toast.on { opacity: 1; transform: translate(-50%, 0); }
+.xp-toast.big { font-size: 17px; padding: 11px 20px; }
+.ov-xp { font: 800 15px var(--body); color: var(--accent); }
+
+/* ---------- survival clock ---------- */
+.clock { font-variant-numeric: tabular-nums; }
+.clock b { font-size: 16px; }
+.clock.low b { color: var(--bad); }
+.clock.add b { color: var(--good); }
+
+/* ---------- two players: whose balls ---------- */
+.pl .grp { font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { .msg, .mode-card, .switch::after { transition: none; } }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+<script>try { document.documentElement.dataset.theme = JSON.parse(localStorage.getItem("runout-theme")) || "sketch"; } catch (e) { document.documentElement.dataset.theme = "sketch"; }</script>
+
+<!-- ================= MENU ================= -->
+<section class="screen" id="scr-menu" aria-labelledby="menuTitle">
+  <div class="menu-head">
+    <div>
+      <h1 class="logo" id="menuTitle">Run Out<span>.</span></h1>
+      <p class="lede">Learn the basics, then take on pool puzzles, an endless survival run, a table of 36 blacks or a friend.</p>
+    </div>
+    <button class="chip" id="menuProfile" aria-label="Open profile"><span class="av" id="menuAv">P</span><span class="chip-txt"><span id="menuName" class="selectable">Player</span><span class="chip-lvl" id="menuLvl">Level 1</span></span><span class="chip-bar" aria-hidden="true"><i id="menuXp"></i></span></button>
+  </div>
+  <div class="mode-grid">
+    <button class="mode-card wide" data-mode="learn">
+      <canvas data-art="learn" width="480" height="270" aria-hidden="true"></canvas>
+      <div class="mc-body"><h2>Learn</h2><p>Six short lessons: the ghost ball, cut angles, picking the easier pot, spin and position. Start here if you’re new to pool.</p><div class="mc-meta" id="metaLearn"></div></div>
+    </button>
+    <button class="mode-card" data-mode="puzzle">
+      <canvas data-art="puzzle" width="480" height="270" aria-hidden="true"></canvas>
+      <div class="mc-body"><h2>Puzzles</h2><p>Set 8-ball positions. Clear the table in one visit.</p><div class="mc-meta" id="metaPuzzle"></div></div>
+    </button>
+    <button class="mode-card" data-mode="versus">
+      <canvas data-art="versus" width="480" height="270" aria-hidden="true"></canvas>
+      <div class="mc-body"><h2>Two players</h2><p>Classic 8-ball on one device. Pass it between turns.</p><div class="mc-meta" id="metaVersus"></div></div>
+    </button>
+    <button class="mode-card" data-mode="survival">
+      <canvas data-art="survival" width="480" height="270" aria-hidden="true"></canvas>
+      <div class="mc-body"><h2>Survival</h2><p>Endless positions that get harder. Three lives.</p><div class="mc-meta" id="metaSurvival"></div></div>
+    </button>
+    <button class="mode-card" data-mode="blackout">
+      <canvas data-art="blackout" width="480" height="270" aria-hidden="true"></canvas>
+      <div class="mc-body"><h2>Blackout</h2><p>36 black balls, one table. Clear them all in as few shots as you can.</p><div class="mc-meta" id="metaBlackout"></div></div>
+    </button>
+  </div>
+  <div class="menu-foot">
+    <button class="b" id="menuSettings">Settings</button>
+    <button class="b" id="menuProfile2">Profile</button>
+  </div>
+</section>
+
+<!-- ================= GAME ================= -->
+<section class="screen" id="scr-game" hidden aria-labelledby="gameTitle">
+  <div class="head">
+    <div class="head-l">
+      <button class="back" id="gameBack">← Menu</button>
+      <div><h1 id="gameTitle">Puzzles</h1><div class="help head-title-tag" id="tag"></div></div>
+    </div>
+    <button class="icon-btn" id="gameSettings" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+  </div>
+  <nav class="levels" id="levels" aria-label="Levels"></nav>
+  <section class="brief">
+    <div><h2 id="pzName">—</h2><p id="pzNote"></p></div>
+    <div class="hud" id="hud"></div>
+  </section>
+  <div class="stage">
+    <div class="board" id="board">
+      <canvas id="c" width="1080" height="580" aria-label="Table"></canvas>
+      <canvas id="mini" hidden aria-label="Course map. Tap to see the whole course."></canvas>
+      <div class="msg" id="msg" style="opacity:0"></div>
+      <div class="overlay" id="overlay" hidden>
+        <div class="card">
+          <h3 id="ovTitle"></h3>
+          <p id="ovText"></p>
+          <div id="ovExtra" hidden></div>
+          <div class="row" id="ovRow"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dock">
+  <section class="bar" aria-label="Shot controls">
+    <svg class="wheel" id="wheel" viewBox="-100 -100 200 200" tabindex="0" role="slider"
+      aria-label="Aim wheel: turn to fine-tune your aim" aria-valuemin="0" aria-valuemax="360" aria-valuenow="0" aria-valuetext="0.0 degrees">
+      <circle class="face" r="96"/>
+      <g id="wheelRot"></g>
+      <circle class="inner" r="58"/>
+      <polygon class="ptr" points="0,-99 -8,-83 8,-83"/>
+      <text class="deg" id="wheelDeg" y="9" text-anchor="middle" font-size="25">0.0°</text>
+    </svg>
+    <div class="mid">
+      <div>
+        <label class="lbl" for="power">Power <output id="powerOut">45%</output></label>
+        <input type="range" id="power" min="0.08" max="1" step="0.01" value="0.45">
+      </div>
+      <div class="seg" id="spinSeg" role="group" aria-label="Spin">
+        <button data-spin="-1" aria-pressed="false">Draw</button>
+        <button data-spin="0" aria-pressed="true">Stun</button>
+        <button data-spin="1" aria-pressed="false">Follow</button>
+      </div>
+    </div>
+    <button class="b shoot big" id="shoot">Shoot</button>
+  </section>
+  <div class="foot">
+    <p class="help" id="aimHelp">Drag behind the cue ball to aim, turn the wheel to fine-tune. <kbd>←</kbd> <kbd>→</kbd> nudge · <kbd>Space</kbd> shoot · <kbd>R</kbd> reset · <kbd>Esc</kbd> menu</p>
+    <div class="tools">
+      <button class="b" id="hint">Hint</button>
+      <button class="b" id="map" hidden aria-pressed="false">Whole course</button>
+      <button class="b" id="watch">Solution</button>
+      <button class="b" id="reset">Reset</button>
+      <button class="b" id="endrun" hidden>End run</button>
+      <button class="b" id="newMatch" hidden>New match</button>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ================= LEARN ================= -->
+<section class="screen" id="scr-learn" hidden aria-labelledby="learnTitle">
+  <div class="head"><div class="head-l"><button class="back" data-back>← Back</button><h1 id="learnTitle">Learn</h1></div></div>
+  <p class="lede learn-lede">Each lesson is one idea and a few drills. The help on screen is taken away a step at a time, and when you miss you’ll be told why. <span id="learnSum"></span></p>
+  <div class="lessons" id="learnList"></div>
+</section>
+
+<!-- ================= TWO PLAYER SETUP ================= -->
+<section class="screen" id="scr-versus" hidden aria-labelledby="vsTitle">
+  <div class="head"><div class="head-l"><button class="back" data-back>← Back</button><h1 id="vsTitle">Two players</h1></div></div>
+  <div class="panel vs-setup">
+    <div class="vs-names">
+      <label for="vsName1">Player 1<input id="vsName1" maxlength="16" autocomplete="off"></label>
+      <span class="vs" aria-hidden="true">vs</span>
+      <label for="vsName2">Player 2<input id="vsName2" maxlength="16" autocomplete="off"></label>
+    </div>
+    <div>
+      <div class="lbl" id="breakLbl">Who breaks?</div>
+      <div class="seg" id="vsBreak" role="group" aria-labelledby="breakLbl" style="margin-top:6px">
+        <button data-b="0" aria-pressed="false">Player 1</button>
+        <button data-b="r" aria-pressed="true">Random</button>
+        <button data-b="1" aria-pressed="false">Player 2</button>
+      </div>
+    </div>
+    <div class="setting" style="border-top:0;padding:0"><div><strong>Hand-over screen</strong><span>Shows whose turn it is before each turn, so nobody shoots by accident.</span></div><button class="switch" role="switch" id="vsPass" aria-label="Hand-over screen"></button></div>
+    <p>Standard 8-ball. The first player to pot a ball after the break claims that group. Pot all of yours, then the black. A foul gives your opponent ball in hand: they drag the cue ball anywhere.</p>
+    <button class="b primary big-cta" id="vsStart">Rack ’em</button>
+  </div>
+</section>
+
+<!-- ================= SETTINGS ================= -->
+<section class="screen" id="scr-settings" hidden aria-labelledby="setTitle">
+  <div class="head"><div class="head-l"><button class="back" data-back>← Back</button><h1 id="setTitle">Settings</h1></div></div>
+  <div class="settings">
+    <div class="panel showcase" aria-label="Theme preview">
+      <div class="lbl"><span>Preview</span><span id="showName"></span></div>
+      <canvas id="showPool" width="900" height="500" aria-hidden="true"></canvas>
+      <div class="show-row">
+        <canvas id="showLearn" width="440" height="260" aria-hidden="true"></canvas>
+        <div class="ui-sample">
+          <div class="row"><button class="b primary" tabindex="-1">Shoot</button><button class="b" tabindex="-1">Reset</button></div>
+          <div class="row"><span class="diff" data-r="3"><i></i><i></i><i></i><i></i><i></i> Tricky</span></div>
+          <div><div class="lbl">Power <output>60%</output></div><input type="range" tabindex="-1" value="0.6" min="0" max="1" step="0.01" style="--fill:60%" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+      <div class="panel">
+        <h2>Theme</h2>
+        <div class="theme-list" id="themeList" role="radiogroup" aria-label="Theme"></div>
+      </div>
+      <div class="panel">
+        <h2>Gameplay</h2>
+        <div class="setting"><div><strong>Pull back to aim</strong><span>Drag behind the cue ball like a real cue. Turn off to point at where you want to hit.</span></div><button class="switch" role="switch" id="setPull" aria-label="Pull back to aim"></button></div>
+        <div class="setting"><div><strong>Sound effects</strong><span>Clicks, pots and the cup.</span></div><button class="switch" role="switch" id="setSound" aria-label="Sound effects"></button></div>
+        <div class="setting"><div><strong>Camera shake</strong><span>A small jolt when a ball drops.</span></div><button class="switch" role="switch" id="setShake" aria-label="Camera shake"></button></div>
+        <div class="setting"><div><strong>Fade the other group</strong><span>Dims balls that aren't yours.</span></div><button class="switch" role="switch" id="setFade" aria-label="Fade the other group"></button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROFILE ================= -->
+<section class="screen" id="scr-profile" hidden aria-labelledby="profTitle">
+  <div class="head"><div class="head-l"><button class="back" data-back>← Back</button><h1 id="profTitle">Profile</h1></div></div>
+  <div class="profile">
+    <div class="panel who">
+      <span class="av big" id="profAv">P</span>
+      <label for="profName">Your name</label>
+      <input id="profName" maxlength="20" autocomplete="nickname" placeholder="Player">
+      <div class="levelbox" id="levelBox"></div>
+    </div>
+    <div class="panel">
+      <h2>Your stats</h2>
+      <div class="stats" id="stats"></div>
+      <details class="xp-how"><summary>How XP works</summary>
+        <ul>
+          <li>Learn: 25 XP for each new drill, 75 more for finishing a lesson.</li>
+          <li>Puzzles: 50 XP × the difficulty the first time you solve one, 10 XP after that.</li>
+          <li>Survival: 10 XP + 10 × the difficulty for every position cleared, 50 XP for a new best run.</li>
+          <li>Blackout: 100 XP for clearing the table, plus 5 XP for every shot under 50, and 50 XP for a new best.</li>
+          <li>Two players: 40 XP for every frame you finish.</li>
+          <li>Each level needs 50 XP more than the one before.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+  <div class="panel danger">
+    <h2>Reset progress</h2>
+    <p>Clears your level and XP, solved puzzles, Learn progress, best scores and all stats. Your name and theme stay.</p>
+    <div class="confirm" id="resetRow"><button class="b warn" id="resetAsk">Reset progress</button></div>
+  </div>
+</section>
+
+<div class="xp-toast" id="xpToast" aria-hidden="true"></div>
+<div id="live" class="sr" aria-live="polite"></div>
+
+<script>
+/*SCRIPT*/
+</script>

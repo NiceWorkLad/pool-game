@@ -1,0 +1,15 @@
+{
+  "name": "run-out",
+  "version": "0.14.0",
+  "private": true,
+  "description": "Run Out: pool puzzles, Learn mode, survival, Blackout and two-player 8-ball in one HTML page.",
+  "scripts": {
+    "build": "node build.js",
+    "check": "node build.js /tmp && node -e \"new Function(require('fs').readFileSync('/tmp/check.js','utf8'))\" && echo syntax ok",
+    "verify:bank": "node verifybank.js",
+    "verify:lessons": "node genlessons.js",
+    "validate:grader": "node validate.js",
+    "serve": "npx --yes http-server -p 8080 -c-1 ."
+  },
+  "engines": { "node": ">=20" }
+}

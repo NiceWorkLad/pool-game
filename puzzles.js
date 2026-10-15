@@ -1,0 +1,21 @@
+const PUZZLES = [
+  { name: "The Black", group: "solids", note: "Only the black left. Sink it.",
+    balls: [{ id: 0, x: 300, y: 250 }, { id: 8, x: 840, y: 130 }] },
+  { name: "Long Cut", group: "solids", note: "Only the black left. Pick your pocket carefully.",
+    balls: [{ id: 0, x: 250, y: 380 }, { id: 8, x: 560, y: 95 }] },
+  { name: "One and the Black", group: "solids", note: "Pot the 1, then get position on the black.",
+    balls: [{ id: 0, x: 380, y: 300 }, { id: 1, x: 760, y: 120 }, { id: 8, x: 700, y: 420 }] },
+  { name: "Kick", group: "solids", note: "No direct path. Use a cushion.",
+    balls: [{ id: 0, x: 180, y: 380 }, { id: 8, x: 880, y: 90 }, { id: 9, x: 520, y: 250 }, { id: 10, x: 557, y: 221 }, { id: 11, x: 483, y: 279 }, { id: 12, x: 860, y: 140 }] },
+  { name: "Traffic", group: "stripes", note: "You're stripes. Two balls, then the black.",
+    balls: [{ id: 0, x: 500, y: 330 }, { id: 9, x: 220, y: 120 }, { id: 13, x: 820, y: 380 }, { id: 8, x: 500, y: 140 }, { id: 2, x: 360, y: 230 }, { id: 5, x: 650, y: 250 }, { id: 6, x: 900, y: 250 }] },
+  { name: "Plant", group: "solids", note: "The 3 sits awkwardly near the rail. Find a way in.",
+    balls: [{ id: 0, x: 300, y: 250 }, { id: 3, x: 640, y: 380 }, { id: 4, x: 900, y: 450 }, { id: 8, x: 420, y: 90 }, { id: 11, x: 820, y: 350 }, { id: 14, x: 760, y: 470 }] },
+  { name: "Three to Go", group: "solids", note: "Plan the whole run before you shoot.",
+    balls: [{ id: 0, x: 150, y: 250 }, { id: 1, x: 300, y: 100 }, { id: 5, x: 520, y: 400 }, { id: 7, x: 840, y: 160 }, { id: 8, x: 900, y: 420 }, { id: 10, x: 560, y: 110 }, { id: 12, x: 330, y: 400 }, { id: 15, x: 700, y: 280 }] },
+  { name: "Cluster", group: "stripes", note: "Your 11 is tied up in a pack.",
+    balls: [{ id: 0, x: 200, y: 250 }, { id: 11, x: 689, y: 251 }, { id: 3, x: 731, y: 220 }, { id: 4, x: 728, y: 277 }, { id: 6, x: 768, y: 252 }, { id: 14, x: 400, y: 440 }, { id: 8, x: 880, y: 70 }] },
+  { name: "Clearance", group: "solids", note: "Four balls and the black. Win from here.",
+    balls: [{ id: 0, x: 500, y: 250 }, { id: 2, x: 150, y: 80 }, { id: 3, x: 820, y: 420 }, { id: 4, x: 480, y: 430 }, { id: 6, x: 880, y: 90 }, { id: 8, x: 300, y: 300 }, { id: 9, x: 650, y: 170 }, { id: 12, x: 120, y: 400 }, { id: 13, x: 700, y: 360 }] },
+];
+if (typeof module !== 'undefined') module.exports = PUZZLES;
