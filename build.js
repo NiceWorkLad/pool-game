@@ -18,6 +18,6 @@ let js = fs.readFileSync('game.js', 'utf8')
   .replace('/*RATINGS*/', () => fs.readFileSync('ratings.json', 'utf8'))
   .replace('/*SURVIVAL*/', () => JSON.stringify(JSON.parse(fs.readFileSync('survival.json', 'utf8')).map(p => ({ group: p.group, balls: p.balls, sol: p.sol }))));
 const html = fs.readFileSync('template.html', 'utf8').replace('/*SCRIPT*/', () => js);
-fs.writeFileSync('run-out.html', html);
+fs.writeFileSync('index.html', html);
 if (process.argv[2]) fs.writeFileSync(process.argv[2] + '/check.js', js); // optional: the bare script, for syntax checks
 console.log('built', html.length, 'pars', HOLES.map(h => h.par).join(','));

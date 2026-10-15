@@ -4,18 +4,18 @@ A pool game in a single HTML page: chess-style 8-ball puzzles, a Learn mode that
 
 ## Play
 
-Open `run-out.html` in a browser, or serve the folder:
+Open `index.html` in a browser (or play it at https://pool.whittleadams.com), or serve the folder:
 
 ```bash
-npm run serve        # http://localhost:8080/run-out.html
+npm run serve        # http://localhost:8080
 ```
 
 ## Build
 
-`run-out.html` is generated. Edit the source files, then:
+`index.html` is generated. Edit the source files, then:
 
 ```bash
-npm run build        # writes run-out.html
+npm run build        # writes index.html
 npm run check        # build + JavaScript syntax check
 ```
 
